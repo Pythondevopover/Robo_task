@@ -11,7 +11,7 @@ from vertification_username import validation_username
 from login import *
 import json
 
-with open("Bot_token.json",'w',encoding='utf-8') as f:
+with open("Bot_token.json",'r',encoding='utf-8') as f:
     token = json.load(f)
 
 valid = False
