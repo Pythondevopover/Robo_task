@@ -37,7 +37,7 @@ def version_1_1_choice_task(username: str, diff_mn: int, diff_mx: int) -> list:
         if answer_diff == answer_task == -1:
             return [f'Siz [{diff_mn};{diff_mx}] oraliqdagi barcha masalalrni ishlagansiz!!!']
 
-        return [answer_diff, task_url + str(answer_task).zfill(4)]
+        return [answer_diff, task_url + str(answer_task).zfill(4), answer_task]
     elif requests.get(url).status_code == 404:
         return ['Siz usernameingizni xato kitdingiz!!!']
     else:
@@ -94,16 +94,17 @@ def difficult(diff):
     return 120
 
 def accmi(task_number, username):
-    url = f'https://robocontest.uz/profile/{username}/tasks?page=' + str((task_number + 19) // 20)
-    re = requests.get(url)
+    for i in range(1, 62):
+        url = f'https://robocontest.uz/profile/{username}/tasks?page=' + str(i)
+        re = requests.get(url)
 
-    so = BeautifulSoup(re.text, 'html.parser')
+        so = BeautifulSoup(re.text, 'html.parser')
 
-    div = so.find('div', class_='table-responsive')
+        div = so.find('div', class_='table-responsive')
 
-    ans = div.text.strip()
-    if str(task_number).zfill(4) in ans:
-        return True
+        ans = div.text.strip()
+        if str(task_number).zfill(4) in ans:
+            return True
     return False
 
 

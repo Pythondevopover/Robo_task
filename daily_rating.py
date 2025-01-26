@@ -34,10 +34,10 @@ def daily_top_users():
     ty = f'{day}.{month}.{year}'
     try:
         ranks = ranks[ty][0]
-        if len(ranks) > 10:
+        if len(ranks) >= 10:
             ans = {}
             cnt = 0
-            for i,j in dict(sorted(ranks[0][ty][0].items(), key=lambda item: item[1], reverse=True)).items():
+            for i,j in dict(sorted(ranks.items(), key=lambda item: item[1], reverse=True)).items():
                 if cnt != 9:
                     ans[i] = j
                     cnt += 1
@@ -46,7 +46,7 @@ def daily_top_users():
             print(ans)
             return [ans]
         else:
-            return [dict(sorted(ranks[0][ty][0].items(), key=lambda item: item[1], reverse=True))]
+            return [dict(sorted(ranks.items(), key=lambda item: item[1], reverse=True))]
     except:
         return [False]
         

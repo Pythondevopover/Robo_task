@@ -1,2 +1,1 @@
-res = 'wirjfowf/ferm'
-print(res[res.rfind('/')+1:])
+print((232+19) // 20)

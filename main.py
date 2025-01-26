@@ -11,13 +11,15 @@ from vertification_username import validation_username
 from login import *
 import json
 
-with open("Bot_token.json",'r',encoding='utf-8') as f:
-    token = json.load(f)
+def ldh():
+    with open('Bot_token.json', 'r') as f:
+        return json.load(f)
+token = ldh()
 
 valid = False
 username = False
 tekshir = False
-API_TOKEN = token[0]['Token']
+API_TOKEN = token['Token']
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
@@ -220,6 +222,7 @@ async def help_handler(message: types.Message):
             "/logout -> Profilingizdan chiqadi.\n"
             "/my_daily_rank -> Sizning bugungi ishlagan masalalaringiz soni.\n"
             "/daily_top_10 -> Bugun eng ko'p yechgan top10 user.\n"
+            "/daily_rank_problems -> Berilgan masala orqali siz kunllik reytingizni kotarasiz.\n"
             "/other -> Agar botimizda kamchilik, taklif, shikoyatlaringiz bolsa yozinglar. Unga /other <problem> ko'rinishida yozing."
         )
     else:
@@ -274,15 +277,17 @@ async def prom(message: types.Message):
             await message.answer(ans[0])
             return
         res = difficult(int(ans[0]))
+        task_number_num = ans[2]
+        await message.reply(f"Sizga {ans[1]} masalasi tushdi.")
         await message.reply(f"Agar masalani {res} min dan oldin yechib bolsangiz /tekshirish buyrug'ini kiriting")
         tekshir = True
-        task_number_num = int(ans[0][-4:])
+        # task_number_num = int(ans[0][-4:])
         for i in range(res * 60 - 2):
-            asyncio.sleep(1)
+            await asyncio.sleep(1)
             if solved:
                 break
-        
-        answer = accmi(int(ans[0][-4:]), username) if not solved else True
+         
+        answer = accmi(ans[2], username) if not solved else True
         if answer:
             rating(username)
             await message.reply('Qoyil. Yaxshi bajardingiz!!!')
@@ -308,8 +313,10 @@ async def top(message: types.Message):
             await message.reply("Bugun hali hech kim masala ishlamadi!")
         else:
             idx = 1
-            for i,j in ans[0].items():
+            # print(ans)
+            for i,j in top10[0].items():
                 ans += f'{idx}. {i} = {j} ta\n'
+                idx += 1
             
             await message.reply(ans)
     else:
