@@ -1,6 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+def lhg():
+    with open('Bot_token.json', 'r', encoding='utf-8') as f:
+        return json.load(f)
 def load_json():
     with open('register.json', 'r', encoding='utf-8') as f:
         return json.load(f)
@@ -12,11 +15,12 @@ def login_user(user_attempt, code, username):
     session = requests.Session()
     home_page = session.get("https://robocontest.uz")
     soup = BeautifulSoup(home_page.text, "html.parser")
+    p = lhg()
     csrf_token = soup.find("meta", {"name": "csrf-token"})["content"]
     login_data = {
         "_token": csrf_token,
-        "email": "java_one",
-        "password": "159...357aB",
+        "email": p['username'],
+        "password": p['password'],
         "redirect": ""
     }
     login_response = session.post("https://robocontest.uz/login", data=login_data)
@@ -56,4 +60,3 @@ def registerr(username, password):
 def sign_up(username, password):
     users = load_json()[0]
     return users[username] == password
-# login_user(7273808, 'print(5087233020)', 'python_devopover')
