@@ -9,11 +9,15 @@ from user import user_about
 from daily_rating import *
 from vertification_username import validation_username
 from login import *
+import json
+
+with open("Bot_token.json",'w',encoding='utf-8') as f:
+    token = json.load(f)
 
 valid = False
 username = False
 tekshir = False
-API_TOKEN = '7898605534:AAG7cNcfedmTYlsA-zV6SU-SKwYK7FXwTSk'
+API_TOKEN = token[0]['Token']
 
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(storage=MemoryStorage())
